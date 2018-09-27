@@ -138,7 +138,7 @@ public class BandoriBot extends ListenerAdapter{
 					currentEvent = currentEvent.replace("<MAKEEAT>", makeeatList[(int)(Math.random()*makeeatList.length)]);
 					currentEvent = currentEvent.replace("<WITHPOPIPA>", popipaList[(int)(Math.random()*popipaList.length)]);
 					currentEvent = currentEvent.replace("<SCOLDYELL>", scoldyellList[(int)(Math.random()*scoldyellList.length)]);
-					currentEventTimer = 300 + (int)(15*Math.random());
+					currentEventTimer = 300 + (int)((30*60)*Math.random());
 					bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
 				}
 			}
