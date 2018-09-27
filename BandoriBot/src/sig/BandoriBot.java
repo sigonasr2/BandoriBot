@@ -147,7 +147,7 @@ public class BandoriBot extends ListenerAdapter{
 				currentEventTimer--;
 				if (currentEventTimer==0) {
 					currentEvent = "";
-					bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
+					bot.getPresence().setGame(null);
 				}
 			}
 			try {
