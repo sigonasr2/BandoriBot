@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.Game.GameType;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.Event;
@@ -108,20 +109,20 @@ public class BandoriBot extends ListenerAdapter{
 				if (noMessageTimer>12600) {
 					currentEvent = "Dreaming about stars";
 					if (currentEventTimer==0) {
-						bot.getPresence().setGame(Game.playing(currentEvent));
+						bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
 					}
 					currentEventTimer = 300;
 				} else
 				if (noMessageTimer>9000) {
 					currentEvent = "Sleeping";
 					if (currentEventTimer==0) {
-						bot.getPresence().setGame(Game.playing(currentEvent));
+						bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
 					}
 					currentEventTimer = 300;
 				} else {
 					currentEvent = "Taking a cat-nap";
 					if (currentEventTimer==0) {
-						bot.getPresence().setGame(Game.playing(currentEvent));
+						bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
 					}
 					currentEventTimer = 300;
 				}
@@ -138,7 +139,7 @@ public class BandoriBot extends ListenerAdapter{
 					currentEvent = currentEvent.replace("<WITHPOPIPA>", popipaList[(int)(Math.random()*popipaList.length)]);
 					currentEvent = currentEvent.replace("<SCOLDYELL>", scoldyellList[(int)(Math.random()*scoldyellList.length)]);
 					currentEventTimer = 300 + (int)(15*Math.random());
-					bot.getPresence().setGame(Game.playing(currentEvent));
+					bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
 				}
 			}
 				
@@ -146,7 +147,7 @@ public class BandoriBot extends ListenerAdapter{
 				currentEventTimer--;
 				if (currentEventTimer==0) {
 					currentEvent = "";
-					bot.getPresence().setGame(Game.playing(currentEvent));
+					bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
 				}
 			}
 			try {
