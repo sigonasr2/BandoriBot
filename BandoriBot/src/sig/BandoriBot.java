@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.Event;
@@ -20,16 +21,139 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 public class BandoriBot extends ListenerAdapter{
 	final public static String BASEDIR = "./"; 
 	public static HashMap<String,List<String>> stamp_map = new HashMap<String,List<String>>();
+	public static int noMessageTimer = 0; //How long it's been since no messages.
+	public static int currentEventTimer = 0;
+	public static String currentEvent = "";
+	public static JDA bot;
+	
+	public static String[] eventsList = new String[]{
+			"Making Choco Cornets",
+			"Making Choco Cornets w/Rimi",
+			"Hanging out w/<CHARACTER>",
+			"Practicing Guitar",
+			"Playing Fuwa-Fuwa Time (again)",
+			"Playing Multi-Live w/4* Aya",
+			"Gazing at the stars",
+			"<MAKEEAT> Star Candy <WITHPOPIPA>",
+			"Playing Tentai Kansoku w/Afterglow",
+			"Hanging out w/<CHARACTER>",
+			"Writing a new song",
+			"Not doing homework",
+			"Bothering Arisa",
+			"Looking for Arisa",
+			"Getting <SCOLDYELL> by Arisa",
+			"Having a picnic at Kokoro's Mansion",
+			"Trying to make Arisa smile",
+			"Shopping at the mall w/<CHARACTER>",
+			"a Heart-pounding Song",
+			"Dokidoki SING OUT!"
+	};
+
+	public static String[] makeeatList = new String[]{
+			"Making",
+			"Eating"
+	};
+	public static String[] scoldyellList = new String[]{
+			"Scolded",
+			"Yelled at"
+	};
+	public static String[] popipaList = new String[]{
+			"Tae",
+			"Rimi",
+			"Saaya",
+			"Arisa",
+	};
+	
+	public static String[] characterList = new String[]{
+			"Tae",
+			"Rimi",
+			"Saaya",
+			"Arisa",
+			"Ran",
+			"Moca",
+			"Himari",
+			"Tomoe",
+			"Tsugumi",
+			"Kokoro",
+			"Kaoru",
+			"Hagumi",
+			"Kanon",
+			"Misaki",
+			"Aya",
+			"Hina",
+			"Chisato",
+			"Maya",
+			"Eve",
+			"Yukina",
+			"Sayo",
+			"Lisa",
+			"Ako",
+			"Rinko"
+	};
+	
 	
 	public static void main(String[] arguments) {
 		populateStampMap();
 		String[] filedata = FileUtils.readFromFile(BASEDIR+"clientToken.txt");
 		try {
-			JDA bot = new JDABuilder(filedata[0])
+			bot = new JDABuilder(filedata[0])
 			.addEventListener(new BandoriBot()).build();
 			bot.awaitReady();
 		} catch (LoginException | InterruptedException e) {
 			e.printStackTrace();
+		}
+		while (true) {
+			noMessageTimer++;
+			if (noMessageTimer>7200) {
+				if (noMessageTimer>12600) {
+					currentEvent = "Dreaming about stars";
+					if (currentEventTimer==0) {
+						bot.getPresence().setGame(Game.playing(currentEvent));
+					}
+					currentEventTimer = 300;
+				} else
+				if (noMessageTimer>9000) {
+					currentEvent = "Sleeping";
+					if (currentEventTimer==0) {
+						bot.getPresence().setGame(Game.playing(currentEvent));
+					}
+					currentEventTimer = 300;
+				} else {
+					currentEvent = "Taking a cat-nap";
+					if (currentEventTimer==0) {
+						bot.getPresence().setGame(Game.playing(currentEvent));
+					}
+					currentEventTimer = 300;
+				}
+			} else {
+				if (currentEventTimer==0 && Math.random()<(1/300d)) {
+					//Start a new event.
+					currentEvent = eventsList[(int)(Math.random()*eventsList.length)];
+					if (Math.random()<0.8) {
+						currentEvent = currentEvent.replace("<CHARACTER>", popipaList[(int)(Math.random()*popipaList.length)]);
+					} else {
+						currentEvent = currentEvent.replace("<CHARACTER>", characterList[(int)(Math.random()*characterList.length)]);
+					}
+					currentEvent = currentEvent.replace("<MAKEEAT>", makeeatList[(int)(Math.random()*makeeatList.length)]);
+					currentEvent = currentEvent.replace("<WITHPOPIPA>", popipaList[(int)(Math.random()*popipaList.length)]);
+					currentEvent = currentEvent.replace("<SCOLDYELL>", scoldyellList[(int)(Math.random()*scoldyellList.length)]);
+					currentEventTimer = 300 + (int)(15*Math.random());
+					bot.getPresence().setGame(Game.playing(currentEvent));
+				}
+			}
+				
+			if (currentEventTimer>0) {
+				currentEventTimer--;
+				if (currentEventTimer==0) {
+					currentEvent = "";
+					bot.getPresence().setGame(Game.playing(currentEvent));
+				}
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -110,6 +234,7 @@ public class BandoriBot extends ListenerAdapter{
 				}
 			}
 			if (foundmatch) {
+				noMessageTimer=0;
 				return;
 			}
 		}
