@@ -38,7 +38,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("tae_letsplay",Arrays.asList("playtogether","wanttoplay","multilive","letsplay"));
 		stamp_map.put("rimi_choco",Arrays.asList("choco","cornet"));
 		stamp_map.put("saya_bread",Arrays.asList("bread"));
-		stamp_map.put("arisa_doki",Arrays.asList("doki"));
+		stamp_map.put("arisa_doki",Arrays.asList("doki","chomama"));
 		stamp_map.put("ran_same",Arrays.asList("sameasalways","alwayssame","alwaysthesame"));
 		stamp_map.put("moca_youdidit",Arrays.asList("youdidit","congratulations","buns","mocatastic"));
 		stamp_map.put("himari_heyheyhoh",Arrays.asList("heyo","heyhey","hihi","hiyo"));
@@ -52,7 +52,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("misaki_ready",Arrays.asList("amready","beenready","ready!"));
 		stamp_map.put("hina_fullcombo",Arrays.asList("fcd","fullcombo","nomiss","allperfect","notasinglemiss","thefc","anfc","fullperfect"));
 		stamp_map.put("chisato_planned",Arrays.asList("justasplanned","allplanned","calculated","thatcoming"));
-		stamp_map.put("maya_huhehe",Arrays.asList("hehe","huehe","huehue"));
+		stamp_map.put("maya_huhehe",Arrays.asList("hehe","huehe","huehue","shuwashuwa"));
 		stamp_map.put("eve_bushido",Arrays.asList("bushido"));
 		stamp_map.put("yukina_notbad",Arrays.asList("notbad","veryclose"));
 		stamp_map.put("sayo_goodwork",Arrays.asList("goodwork","goodjob","nicejob","welldone","greatwork","greatjob"));
@@ -85,11 +85,14 @@ public class BandoriBot extends ListenerAdapter{
 	public static void checkForStamp(MessageChannel channel, String user,String message) {
 		boolean foundmatch = false;
 		message = message.toLowerCase().replaceAll("[ ]", "");
+		if (message.length()>480) {
+			return;
+		}
 		for (String key : stamp_map.keySet()) {
 			for (String message_search : stamp_map.get(key)) {
 				String filteredmessage = message;
 				filteredmessage = filteredmessage.replaceAll("[^A-Za-z0-9]","");
-				System.out.println(filteredmessage);
+				//System.out.println(filteredmessage);
 				if (message_search.contains("?") || message_search.contains("!")) {
 					if (message.contains(message_search)) {
 						foundmatch = true;
@@ -135,7 +138,7 @@ public class BandoriBot extends ListenerAdapter{
 			
 			if (channel.getId().equalsIgnoreCase("485297375665979414")) {
 				System.out.println("Detected in Bandori Channel....");
-				checkForStamp(messaging_channel,user.getNickname(),message);
+				checkForStamp(messaging_channel,user.getEffectiveName(),message);
 			}
 		}
 		
