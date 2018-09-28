@@ -198,7 +198,7 @@ public class BandoriBot extends ListenerAdapter{
 					currentEvent = currentEvent.replace("<STORE>", storeList[(int)(Math.random()*storeList.length)]);
 					currentEvent = currentEvent.replace("<ITEMS>", itemList[(int)(Math.random()*itemList.length)]);
 					if (Math.random()<=0.6) {
-						currentEvent = currentEvent.replace("<POSSIBLECHAR>", possibleCharList[(int)(Math.random()*possibleCharList.length)]);
+						currentEvent = currentEvent.replace("<POSSIBLECHAR>", "w/"+possibleCharList[(int)(Math.random()*possibleCharList.length)]);
 					} else {
 						currentEvent = currentEvent.replace("<POSSIBLECHAR>", "");
 					}
