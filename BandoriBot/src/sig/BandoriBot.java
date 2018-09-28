@@ -48,18 +48,42 @@ public class BandoriBot extends ListenerAdapter{
 			"Having a picnic at Kokoro's Mansion",
 			"Trying to make Arisa smile",
 			"Shopping at the mall w/<CHARACTER>",
-			"Shopping",
+			"Shopping at <STORE> <POSSIBLECHAR>",
+			"Eating at <FOOD> <POSSIBLECHAR>",
 			"a Heart-pounding Song",
-			"Dokidoki SING OUT!"
+			"Doki-Doki SING OUT!",
+			"Playing at the Live House",
+			"Playing at CiRCLE",
+			"Playing with Oddie",
+			"Collecting <ITEMS>",
+			"Rolling Gacha"
 	};
 
 	public static String[] makeeatList = new String[]{
 			"Making",
 			"Eating"
 	};
+	public static String[] itemList = new String[]{
+			"Studio Tickets",
+			"Coins",
+			"Michelle Monakas",
+			"Miracle Crystals",
+	};
 	public static String[] scoldyellList = new String[]{
 			"Scolded",
 			"Yelled at"
+	};
+	public static String[] storeList = new String[]{
+			"Edogawa Music",
+			"Ryuseido",
+			"the mall",
+			"CiRCLE"
+	};
+	public static String[] foodList = new String[]{
+			"the Fast Food Store",
+			"the Cafeteria",
+			"Yamabuki Bakery",
+			"CiRCLE"
 	};
 	public static String[] popipaList = new String[]{
 			"w/Tae",
@@ -67,6 +91,33 @@ public class BandoriBot extends ListenerAdapter{
 			"w/Saaya",
 			"w/Arisa",
 			"w/Poppin' Party",
+	};
+	
+	public static String[] possibleCharList = new String[]{
+			"Tae",
+			"Rimi",
+			"Saaya",
+			"Arisa",
+			"Ran",
+			"Moca",
+			"Himari",
+			"Tomoe",
+			"Tsugumi",
+			"Kokoro",
+			"Kaoru",
+			"Hagumi",
+			"Kanon",
+			"Misaki",
+			"Aya",
+			"Hina",
+			"Chisato",
+			"Maya",
+			"Eve",
+			"Yukina",
+			"Sayo",
+			"Lisa",
+			"Ako",
+			"Rinko"
 	};
 	
 	public static String[] characterList = new String[]{
@@ -142,6 +193,15 @@ public class BandoriBot extends ListenerAdapter{
 					currentEvent = currentEvent.replace("<MAKEEAT>", makeeatList[(int)(Math.random()*makeeatList.length)]);
 					currentEvent = currentEvent.replace("<WITHPOPIPA>", popipaList[(int)(Math.random()*popipaList.length)]);
 					currentEvent = currentEvent.replace("<SCOLDYELL>", scoldyellList[(int)(Math.random()*scoldyellList.length)]);
+					currentEvent = currentEvent.replace("<FOOD>", foodList[(int)(Math.random()*foodList.length)]);
+					currentEvent = currentEvent.replace("<STORE>", storeList[(int)(Math.random()*storeList.length)]);
+					currentEvent = currentEvent.replace("<STORE>", storeList[(int)(Math.random()*storeList.length)]);
+					currentEvent = currentEvent.replace("<ITEMS>", itemList[(int)(Math.random()*itemList.length)]);
+					if (Math.random()<=0.6) {
+						currentEvent = currentEvent.replace("<POSSIBLECHAR>", possibleCharList[(int)(Math.random()*possibleCharList.length)]);
+					} else {
+						currentEvent = currentEvent.replace("<POSSIBLECHAR>", "");
+					}
 					currentEventTimer = 300 + (int)((30*60)*Math.random());
 					bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
 				}
