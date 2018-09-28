@@ -32,6 +32,8 @@ public class BandoriBot extends ListenerAdapter{
 			"Making Choco Cornets w/Rimi",
 			"Hanging out w/<CHARACTER>",
 			"Guitar Practice",
+			"Practice w/The Band",
+			"Band Rehearsal",
 			"Fuwa-Fuwa Time (again)",
 			"Multi-Live w/4* Aya",
 			"Gazing at the stars",
@@ -46,6 +48,7 @@ public class BandoriBot extends ListenerAdapter{
 			"Having a picnic at Kokoro's Mansion",
 			"Trying to make Arisa smile",
 			"Shopping at the mall w/<CHARACTER>",
+			"Shopping",
 			"a Heart-pounding Song",
 			"Dokidoki SING OUT!"
 	};
@@ -59,10 +62,11 @@ public class BandoriBot extends ListenerAdapter{
 			"Yelled at"
 	};
 	public static String[] popipaList = new String[]{
-			"Tae",
-			"Rimi",
-			"Saaya",
-			"Arisa",
+			"w/Tae",
+			"w/Rimi",
+			"w/Saaya",
+			"w/Arisa",
+			"w/Poppin' Party",
 	};
 	
 	public static String[] characterList = new String[]{
@@ -105,15 +109,15 @@ public class BandoriBot extends ListenerAdapter{
 		}
 		while (true) {
 			noMessageTimer++;
-			if (noMessageTimer>7200) {
-				if (noMessageTimer>12600) {
+			if (noMessageTimer>3600) {
+				if (noMessageTimer>9000) {
 					currentEvent = "Dreaming about stars";
 					if (currentEventTimer==0) {
 						bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
 					}
 					currentEventTimer = 300;
 				} else
-				if (noMessageTimer>9000) {
+				if (noMessageTimer>7200) {
 					currentEvent = "Sleeping";
 					if (currentEventTimer==0) {
 						bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
