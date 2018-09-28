@@ -37,7 +37,7 @@ public class BandoriBot extends ListenerAdapter{
 			"Fuwa-Fuwa Time (again)",
 			"Multi-Live w/4* Aya",
 			"Gazing at the stars",
-			"<MAKEEAT> Star Candy <WITHPOPIPA>",
+			"<MAKEEAT> Star Candy w/<WITHPOPIPA>",
 			"Tentai Kansoku w/Afterglow",
 			"Hanging out w/<CHARACTER>",
 			"Writing a new song",
@@ -86,11 +86,11 @@ public class BandoriBot extends ListenerAdapter{
 			"CiRCLE"
 	};
 	public static String[] popipaList = new String[]{
-			"w/Tae",
-			"w/Rimi",
-			"w/Saaya",
-			"w/Arisa",
-			"w/Poppin' Party",
+			"Tae",
+			"Rimi",
+			"Saaya",
+			"Arisa",
+			"Poppin' Party",
 	};
 	
 	public static String[] possibleCharList = new String[]{
