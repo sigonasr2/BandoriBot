@@ -269,6 +269,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("kaoru_takemyhand",Arrays.asList("takemyhand","allowmeto","demonstrate","romeo"));
 		stamp_map.put("kokoro_letsmaketheworldsmile",Arrays.asList("hhw","happyworld","hellohappy","worldsmile"));
 		stamp_map.put("hina_nowwereboppin",Arrays.asList("bop","nowwere","zap"));
+		stamp_map.put("kokoro_what_a_great_idea",Arrays.asList("greatidea","goodidea","greatthinking","goodthinking"));
 	}
 	
 	public static void checkForStamp(MessageChannel channel, String user,String message) {
