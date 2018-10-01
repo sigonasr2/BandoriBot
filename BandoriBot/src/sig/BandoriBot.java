@@ -1,5 +1,10 @@
 package sig;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -52,9 +57,9 @@ public class BandoriBot extends ListenerAdapter{
 			"Eating at <FOOD> <POSSIBLECHAR>",
 			"a Heart-pounding Song",
 			"Doki-Doki SING OUT!",
-			"Playing at the Live House",
-			"Playing at CiRCLE",
-			"Playing with Oddie",
+			"at the Live House",
+			"at CiRCLE",
+			"with Oddie",
 			"Collecting <ITEMS>",
 			"Rolling Gacha"
 	};
@@ -158,26 +163,38 @@ public class BandoriBot extends ListenerAdapter{
 		} catch (LoginException | InterruptedException e) {
 			e.printStackTrace();
 		}
+		File store_file = new File(BASEDIR+"bot_status.txt");
+		if (store_file.exists()) {
+			try {
+				FileReader rd = new FileReader(store_file);
+				BufferedReader reader = new BufferedReader(rd);
+				String status = reader.readLine();
+				UpdateBotStatus(status,300 + (int)((30*60)*Math.random()));
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		while (true) {
 			noMessageTimer++;
 			if (noMessageTimer>3600) {
 				if (noMessageTimer>9000) {
 					currentEvent = "Dreaming about stars";
 					if (currentEventTimer==0) {
-						bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
+						UpdateBotStatus(currentEvent,0);
 					}
 					currentEventTimer = 300;
 				} else
 				if (noMessageTimer>7200) {
 					currentEvent = "Sleeping";
 					if (currentEventTimer==0) {
-						bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
+						UpdateBotStatus(currentEvent,0);
 					}
 					currentEventTimer = 300;
 				} else {
 					currentEvent = "Taking a cat-nap";
 					if (currentEventTimer==0) {
-						bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
+						UpdateBotStatus(currentEvent,0);
 					}
 					currentEventTimer = 300;
 				}
@@ -202,8 +219,7 @@ public class BandoriBot extends ListenerAdapter{
 					} else {
 						currentEvent = currentEvent.replace("<POSSIBLECHAR>", "");
 					}
-					currentEventTimer = 300 + (int)((30*60)*Math.random());
-					bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
+					UpdateBotStatus(currentEvent,300 + (int)((30*60)*Math.random()));
 				}
 			}
 				
@@ -211,7 +227,7 @@ public class BandoriBot extends ListenerAdapter{
 				currentEventTimer--;
 				if (currentEventTimer==0) {
 					currentEvent = "";
-					bot.getPresence().setGame(null);
+					UpdateBotStatus(currentEvent,0);
 				}
 			}
 			try {
@@ -219,6 +235,24 @@ public class BandoriBot extends ListenerAdapter{
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	private static void UpdateBotStatus(String event, int eventTimer) {
+		currentEvent = event;
+		currentEventTimer = eventTimer;
+		if (currentEvent.equalsIgnoreCase("")) {
+			bot.getPresence().setGame(Game.of(GameType.DEFAULT,null));
+		} else {
+			bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
+		}
+		File store_file = new File(BASEDIR+"bot_status.txt");
+		try {
+			FileWriter wr = new FileWriter(store_file);
+			wr.write(currentEvent);
+			wr.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
