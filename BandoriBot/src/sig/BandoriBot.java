@@ -231,6 +231,7 @@ public class BandoriBot extends ListenerAdapter{
 				}
 			}
 			try {
+				System.out.println("Current Event: "+currentEvent+"; Timer: "+currentEventTimer+"; No Message Timer: "+noMessageTimer);
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -242,7 +243,7 @@ public class BandoriBot extends ListenerAdapter{
 		currentEvent = event;
 		currentEventTimer = eventTimer;
 		if (currentEvent.equalsIgnoreCase("")) {
-			bot.getPresence().setGame(Game.of(GameType.DEFAULT,null));
+			bot.getPresence().setGame(null);
 		} else {
 			bot.getPresence().setGame(Game.of(GameType.DEFAULT,currentEvent));
 		}
