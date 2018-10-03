@@ -169,7 +169,7 @@ public class BandoriBot extends ListenerAdapter{
 				FileReader rd = new FileReader(store_file);
 				BufferedReader reader = new BufferedReader(rd);
 				String status = reader.readLine();
-				UpdateBotStatus(status,300 + (int)((30*60)*Math.random()));
+				UpdateBotStatus(status,900 + (int)((90*60)*Math.random()));
 				reader.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -177,26 +177,26 @@ public class BandoriBot extends ListenerAdapter{
 		}
 		while (true) {
 			noMessageTimer++;
-			if (noMessageTimer>3600) {
-				if (noMessageTimer>9000) {
+			if (noMessageTimer>7200) {
+				if (noMessageTimer>18000) {
 					currentEvent = "Dreaming about stars";
 					if (currentEventTimer==0) {
 						UpdateBotStatus(currentEvent,0);
+						currentEventTimer = 300;
 					}
-					currentEventTimer = 300;
 				} else
-				if (noMessageTimer>7200) {
+				if (noMessageTimer>14400) {
 					currentEvent = "Sleeping";
 					if (currentEventTimer==0) {
 						UpdateBotStatus(currentEvent,0);
+						currentEventTimer = 300;
 					}
-					currentEventTimer = 300;
 				} else {
 					currentEvent = "Taking a cat-nap";
 					if (currentEventTimer==0) {
 						UpdateBotStatus(currentEvent,0);
+						currentEventTimer = 300;
 					}
-					currentEventTimer = 300;
 				}
 			} else {
 				if (currentEventTimer==0 && Math.random()<(1/300d)) {
@@ -219,7 +219,7 @@ public class BandoriBot extends ListenerAdapter{
 					} else {
 						currentEvent = currentEvent.replace("<POSSIBLECHAR>", "");
 					}
-					UpdateBotStatus(currentEvent,300 + (int)((30*60)*Math.random()));
+					UpdateBotStatus(currentEvent,900 + (int)((90*60)*Math.random()));
 				}
 			}
 				
