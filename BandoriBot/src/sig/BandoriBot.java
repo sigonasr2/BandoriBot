@@ -282,7 +282,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("sayo_goodwork",Arrays.asList("goodwork","goodjob","nicejob","welldone","greatwork","greatjob"));
 		stamp_map.put("lisa_nextonelastone",Arrays.asList("lastone","mylast"));
 		stamp_map.put("ako_onemoretime",Arrays.asList("onemore","goagain","keepgoing","dontstop","runit"));
-		stamp_map.put("rinko_jam",Arrays.asList("lovethissong","jam"));
+		stamp_map.put("rinko_jam",Arrays.asList("lovethissong","jam"/*,"happybirthday"*/));
 		stamp_map.put("marina_yeahyeah",Arrays.asList("yeahyeah","letsgo"));
 		stamp_map.put("kokoro_moremore",Arrays.asList("moremore","iwantmore"));
 		stamp_map.put("arisa_huh",Arrays.asList("huh?","hh?","yy?","aat?","aa?","tt?","nani","nand"));
@@ -306,6 +306,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("hina_nowwereboppin",Arrays.asList("bop","nowwere","zap"));
 		stamp_map.put("kokoro_what_a_great_idea",Arrays.asList("greatidea","goodidea","greatthinking","goodthinking"));
 		stamp_map.put("sayo_im_sorry",Arrays.asList("sorry","gomen","apologize","somethingwrong","forgive"));
+		stamp_map.put("hagumi_hooray",Arrays.asList("hooray","hiphip","whoo","yahoo"));
 	}
 	
 	public static void checkForStamp(MessageChannel channel, String user,String message) {
