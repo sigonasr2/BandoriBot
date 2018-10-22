@@ -31,6 +31,7 @@ public class BandoriBot extends ListenerAdapter{
 	public static int currentEventTimer = 0;
 	public static String currentEvent = "";
 	public static JDA bot;
+	public static int messageCounter = 0;
 	
 	public static String[] eventsList = new String[]{
 			"Making Choco Cornets",
@@ -183,6 +184,7 @@ public class BandoriBot extends ListenerAdapter{
 					if (currentEventTimer==0) {
 						UpdateBotStatus(currentEvent,0);
 						currentEventTimer = 300;
+						messageCounter = 0;
 					}
 				} else
 				if (noMessageTimer>14400) {
@@ -190,12 +192,14 @@ public class BandoriBot extends ListenerAdapter{
 					if (currentEventTimer==0) {
 						UpdateBotStatus(currentEvent,0);
 						currentEventTimer = 300;
+						messageCounter = 0;
 					}
 				} else {
 					currentEvent = "Taking a cat-nap";
 					if (currentEventTimer==0) {
 						UpdateBotStatus(currentEvent,0);
 						currentEventTimer = 300;
+						messageCounter = 0;
 					}
 				}
 			} else {
@@ -231,7 +235,7 @@ public class BandoriBot extends ListenerAdapter{
 				}
 			}
 			try {
-				System.out.println("Current Event: "+currentEvent+"; Timer: "+currentEventTimer+"; No Message Timer: "+noMessageTimer);
+				System.out.println("Current Event: "+currentEvent+"; Timer: "+currentEventTimer+"; No Message Timer: "+noMessageTimer+"; Message Counter: "+messageCounter);
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -339,6 +343,16 @@ public class BandoriBot extends ListenerAdapter{
 			if (foundmatch) {
 				noMessageTimer=0;
 				return;
+			} else
+			{
+				if (noMessageTimer>7200) {
+					messageCounter++;
+					if (Math.random()>1d/messageCounter) {
+						currentEvent = "";
+						UpdateBotStatus(currentEvent,0);
+						messageCounter = 0;
+					}
+				}
 			}
 		}
 	}
