@@ -351,6 +351,7 @@ public class BandoriBot extends ListenerAdapter{
 						currentEvent = "";
 						UpdateBotStatus(currentEvent,0);
 						messageCounter = 0;
+						noMessageTimer = 0;
 					}
 				}
 			}
