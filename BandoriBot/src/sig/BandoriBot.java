@@ -285,7 +285,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("yukina_notbad",Arrays.asList("notbad","veryclose"));
 		stamp_map.put("sayo_goodwork",Arrays.asList("goodwork","goodjob","nicejob","welldone","greatwork","greatjob"));
 		stamp_map.put("lisa_nextonelastone",Arrays.asList("lastone","mylast"));
-		stamp_map.put("ako_onemoretime",Arrays.asList("onemore","goagain","keepgoing","dontstop","runit"));
+		stamp_map.put("ako_onemoretime",Arrays.asList("onemore","goagain","onceagain","dontstop","runit"));
 		stamp_map.put("rinko_jam",Arrays.asList("lovethissong","jam"/*,"happybirthday"*/));
 		stamp_map.put("marina_yeahyeah",Arrays.asList("yeahyeah","letsgo"));
 		stamp_map.put("kokoro_moremore",Arrays.asList("moremore","iwantmore"));
