@@ -311,6 +311,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("kokoro_what_a_great_idea",Arrays.asList("greatidea","goodidea","greatthinking","goodthinking"));
 		stamp_map.put("sayo_im_sorry",Arrays.asList("sorry","gomen","apologize","somethingwrong","forgive"));
 		stamp_map.put("hagumi_hooray",Arrays.asList("hooray","hiphip","whoo","yahoo"));
+		stamp_map.put("kanon_keepgoing",Arrays.asList("keepgoing","dontstop","youcandoit","makeit","gaja","petan","pettan","pengu"));
 	}
 	
 	public static void checkForStamp(MessageChannel channel, String user,String message) {
@@ -334,7 +335,16 @@ public class BandoriBot extends ListenerAdapter{
 				} else {
 					if (filteredmessage.contains(message_search)) {
 						foundmatch=true;
-						CreateStamp(channel,key);
+						if (key.equalsIgnoreCase("kanon_fuee")) {
+							//If odd, other fuee.
+							if (filteredmessage.length()%2==0) {
+								CreateStamp(channel,key);
+							} else {
+								CreateStamp(channel,"kanon_keepgoing");
+							}
+						} else {
+							CreateStamp(channel,key);
+						}
 						System.out.println("Stamp "+key+" created by user "+user+" MESSAGE:"+message+".");
 						break;
 					}
