@@ -170,6 +170,9 @@ public class BandoriBot extends ListenerAdapter{
 				FileReader rd = new FileReader(store_file);
 				BufferedReader reader = new BufferedReader(rd);
 				String status = reader.readLine();
+				if (status==null) {
+					status = "";
+				}
 				UpdateBotStatus(status,900 + (int)((90*60)*Math.random()));
 				reader.close();
 			} catch (IOException e) {
@@ -312,6 +315,12 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("sayo_im_sorry",Arrays.asList("sorry","gomen","apologize","somethingwrong","forgive"));
 		stamp_map.put("hagumi_hooray",Arrays.asList("hooray","hiphip","whoo","yahoo"));
 		stamp_map.put("kanon_keepgoing",Arrays.asList("keepgoing","dontstop","youcandoit","makeit","gaja","petan","pettan","pengu"));
+		stamp_map.put("tsugumi_amazing",Arrays.asList("amazing","wow","sugoi","wooo","cool!","tsugurific"));
+		
+		
+		/// BOT ONLY!!! DO NOT ADD THE BELOW LINES TO BANDORI MODULE IN SIGIRC!!!
+		stamp_map.put("aya_pressure",Arrays.asList("feelingheavy","thisfeeling","pressure","toomuch","waa","ahhhhh","ayya"));
+		stamp_map.put("aya_miracles",Arrays.asList("miracles","wishes","cometrue","dreams","ayaay"));
 	}
 	
 	public static void checkForStamp(MessageChannel channel, String user,String message) {
