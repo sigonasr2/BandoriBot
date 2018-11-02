@@ -170,6 +170,9 @@ public class BandoriBot extends ListenerAdapter{
 				FileReader rd = new FileReader(store_file);
 				BufferedReader reader = new BufferedReader(rd);
 				String status = reader.readLine();
+				if (status==null) {
+					status = "";
+				}
 				UpdateBotStatus(status,900 + (int)((90*60)*Math.random()));
 				reader.close();
 			} catch (IOException e) {
@@ -267,7 +270,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("rimi_choco",Arrays.asList("choco","cornet"));
 		stamp_map.put("saya_bread",Arrays.asList("bread"));
 		stamp_map.put("arisa_doki",Arrays.asList("doki","chomama","baka"));
-		stamp_map.put("ran_same",Arrays.asList("sameasalways","alwayssame","alwaysthesame"));
+		stamp_map.put("ran_same",Arrays.asList("sameasalways","alwayssame","alwaysthesame","itsum"));
 		stamp_map.put("moca_youdidit",Arrays.asList("youdidit","congratulations","buns","mocatastic"));
 		stamp_map.put("himari_heyheyhoh",Arrays.asList("heyo","heyhey","hihi","hiyo"));
 		stamp_map.put("tomoe_letsdothis",Arrays.asList("letsdothis","letsdoit"));
@@ -276,7 +279,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("kaoru_fleeting",Arrays.asList("fleeting"));
 		stamp_map.put("aya_fever",Arrays.asList("fever","ayay"));
 		stamp_map.put("hagumi_smileyay",Arrays.asList("smileyay","yay!"));
-		stamp_map.put("kanon_fuee",Arrays.asList("fuu","fue","waa","reee"));
+		stamp_map.put("kanon_fuee",Arrays.asList("fuu","fue",/*"waa",*/"reee"));
 		stamp_map.put("misaki_ready",Arrays.asList("amready","beenready","ready!"));
 		stamp_map.put("hina_fullcombo",Arrays.asList("fcd","fullcombo","nomiss","allperfect","notasinglemiss","thefc","anfc","fullperfect","easyfc","ezfc"));
 		stamp_map.put("chisato_planned",Arrays.asList("justasplanned","allplanned","calculated","thatcoming"));
@@ -293,8 +296,8 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("yukina_followmylead",Arrays.asList("followmylead","takethelead","guideyou","fullydevoted"));
 		stamp_map.put("kaoru_suchalovelyevening",Arrays.asList("goodevening","lovelyevening","beautifulnight","grandnight","wonderfulevening"));
 		stamp_map.put("rimi_congrats",Arrays.asList("grats"));
-		stamp_map.put("ran_somethingbigiscoming",Arrays.asList("somethingbig","iscoming"));
-		stamp_map.put("tsugumi_comeon",Arrays.asList("comeon","dontbeafraid","dontbeshy","tsugurific"));
+		stamp_map.put("ran_somethingbigiscoming",Arrays.asList("somethingbig","iscoming","thatishowiroll","truecolor"));
+		stamp_map.put("tsugumi_comeon",Arrays.asList("comeon","dontbeafraid","dontbeshy"));
 		stamp_map.put("tae_fufusocute",Arrays.asList("socute","kawaii","fufu","adorable","cute"));
 		stamp_map.put("eve_marchintobattle",Arrays.asList("marchintobattle","chargeintobattle"));
 		stamp_map.put("saya_illtry",Arrays.asList("illtry","itachance","itatry","atleastonce"));
@@ -311,6 +314,12 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("kokoro_what_a_great_idea",Arrays.asList("greatidea","goodidea","greatthinking","goodthinking"));
 		stamp_map.put("sayo_im_sorry",Arrays.asList("sorry","gomen","apologize","somethingwrong","forgive"));
 		stamp_map.put("hagumi_hooray",Arrays.asList("hooray","hiphip","whoo","yahoo"));
+		stamp_map.put("tsugumi_amazing",Arrays.asList("amazing","wow","sugoi","wooo","cool!","tsugurific"));
+		
+		
+		/// BOT ONLY!!! DO NOT ADD THE BELOW LINES TO BANDORI MODULE IN SIGIRC!!!
+		stamp_map.put("aya_pressure",Arrays.asList("feelingheavy","thisfeeling","pressure","toomuch","waa","ahhhhh","ayya"));
+		stamp_map.put("aya_miracles",Arrays.asList("miracles","wishes","cometrue","dreams","ayaay"));
 	}
 	
 	public static void checkForStamp(MessageChannel channel, String user,String message) {
