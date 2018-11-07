@@ -270,7 +270,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("rimi_choco",Arrays.asList("choco","cornet"));
 		stamp_map.put("saya_bread",Arrays.asList("bread"));
 		stamp_map.put("arisa_doki",Arrays.asList("doki","chomama","baka"));
-		stamp_map.put("ran_same",Arrays.asList("sameasalways","alwayssame","alwaysthesame","itsum"));
+		stamp_map.put("ran_same",Arrays.asList("sameasalways","alwayssame","alwaysthesame"));
 		stamp_map.put("moca_youdidit",Arrays.asList("youdidit","congratulations","buns","mocatastic"));
 		stamp_map.put("himari_heyheyhoh",Arrays.asList("heyo","heyhey","hihi","hiyo"));
 		stamp_map.put("tomoe_letsdothis",Arrays.asList("letsdothis","letsdoit"));
@@ -279,7 +279,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("kaoru_fleeting",Arrays.asList("fleeting"));
 		stamp_map.put("aya_fever",Arrays.asList("fever","ayay"));
 		stamp_map.put("hagumi_smileyay",Arrays.asList("smileyay","yay!"));
-		stamp_map.put("kanon_fuee",Arrays.asList("fuu","fue",/*"waa",*/"reee"));
+		stamp_map.put("kanon_fuee",Arrays.asList("fuu","fue","waa","reee"));
 		stamp_map.put("misaki_ready",Arrays.asList("amready","beenready","ready!"));
 		stamp_map.put("hina_fullcombo",Arrays.asList("fcd","fullcombo","nomiss","allperfect","notasinglemiss","thefc","anfc","fullperfect","easyfc","ezfc"));
 		stamp_map.put("chisato_planned",Arrays.asList("justasplanned","allplanned","calculated","thatcoming"));
@@ -288,7 +288,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("yukina_notbad",Arrays.asList("notbad","veryclose"));
 		stamp_map.put("sayo_goodwork",Arrays.asList("goodwork","goodjob","nicejob","welldone","greatwork","greatjob"));
 		stamp_map.put("lisa_nextonelastone",Arrays.asList("lastone","mylast"));
-		stamp_map.put("ako_onemoretime",Arrays.asList("onemore","goagain","keepgoing","dontstop","runit"));
+		stamp_map.put("ako_onemoretime",Arrays.asList("onemore","goagain","onceagain","dontstop","runit"));
 		stamp_map.put("rinko_jam",Arrays.asList("lovethissong","jam"/*,"happybirthday"*/));
 		stamp_map.put("marina_yeahyeah",Arrays.asList("yeahyeah","letsgo"));
 		stamp_map.put("kokoro_moremore",Arrays.asList("moremore","iwantmore"));
@@ -296,8 +296,8 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("yukina_followmylead",Arrays.asList("followmylead","takethelead","guideyou","fullydevoted"));
 		stamp_map.put("kaoru_suchalovelyevening",Arrays.asList("goodevening","lovelyevening","beautifulnight","grandnight","wonderfulevening"));
 		stamp_map.put("rimi_congrats",Arrays.asList("grats"));
-		stamp_map.put("ran_somethingbigiscoming",Arrays.asList("somethingbig","iscoming","thatishowiroll","truecolor"));
-		stamp_map.put("tsugumi_comeon",Arrays.asList("comeon","dontbeafraid","dontbeshy"));
+		stamp_map.put("ran_somethingbigiscoming",Arrays.asList("somethingbig","iscoming"));
+		stamp_map.put("tsugumi_comeon",Arrays.asList("comeon","dontbeafraid","dontbeshy","tsugurific"));
 		stamp_map.put("tae_fufusocute",Arrays.asList("socute","kawaii","fufu","adorable","cute"));
 		stamp_map.put("eve_marchintobattle",Arrays.asList("marchintobattle","chargeintobattle"));
 		stamp_map.put("saya_illtry",Arrays.asList("illtry","itachance","itatry","atleastonce"));
@@ -314,6 +314,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("kokoro_what_a_great_idea",Arrays.asList("greatidea","goodidea","greatthinking","goodthinking"));
 		stamp_map.put("sayo_im_sorry",Arrays.asList("sorry","gomen","apologize","somethingwrong","forgive"));
 		stamp_map.put("hagumi_hooray",Arrays.asList("hooray","hiphip","whoo","yahoo"));
+		stamp_map.put("kanon_keepgoing",Arrays.asList("keepgoing","dontstop","youcandoit","makeit","gaja","petan","pettan","pengu"));
 		stamp_map.put("tsugumi_amazing",Arrays.asList("amazing","wow","sugoi","wooo","cool!","tsugurific"));
 		
 		
@@ -343,7 +344,16 @@ public class BandoriBot extends ListenerAdapter{
 				} else {
 					if (filteredmessage.contains(message_search)) {
 						foundmatch=true;
-						CreateStamp(channel,key);
+						if (key.equalsIgnoreCase("kanon_fuee")) {
+							//If odd, other fuee.
+							if (filteredmessage.length()%2==0) {
+								CreateStamp(channel,key);
+							} else {
+								CreateStamp(channel,"kanon_keepgoing");
+							}
+						} else {
+							CreateStamp(channel,key);
+						}
 						System.out.println("Stamp "+key+" created by user "+user+" MESSAGE:"+message+".");
 						break;
 					}
