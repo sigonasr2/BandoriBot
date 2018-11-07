@@ -388,10 +388,17 @@ public class BandoriBot extends ListenerAdapter{
 				return;
 			}
 			
+			if (message.contains("@Kasumi Toyama")) {
+				CreateStamp(messaging_channel,"kasumi_gogo");
+				return;
+			}
+			
 			if (channel.getId().equalsIgnoreCase("485297375665979414")) {
 				System.out.println("Detected in Bandori Channel....");
 				checkForStamp(messaging_channel,user.getEffectiveName(),message);
 			}
+				
+			
 		}
 		
 	}
