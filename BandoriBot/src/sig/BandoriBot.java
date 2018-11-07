@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import javax.security.auth.login.LoginException;
 
@@ -32,6 +33,7 @@ public class BandoriBot extends ListenerAdapter{
 	public static String currentEvent = "";
 	public static JDA bot;
 	public static int messageCounter = 0;
+	Random r = new Random();
 	
 	public static String[] eventsList = new String[]{
 			"Making Choco Cornets",
@@ -399,7 +401,18 @@ public class BandoriBot extends ListenerAdapter{
 			}
 			
 			if (message.contains("@Kasumi Toyama")) {
-				CreateStamp(messaging_channel,"kasumi_gogo");
+				if (message.replace("@Kasumi Toyama", "").equalsIgnoreCase("best bot")) {
+					CreateStamp(messaging_channel,"kasumi_gogo");
+				} else {
+					r.setSeed(user.getUser().getIdLong()+message.hashCode());
+					int stamp = r.nextInt(stamp_map.size());
+					String stamp_name = "";
+					for (String s : stamp_map.keySet()) {
+						if (stamp--==0) {
+							CreateStamp(messaging_channel,s);
+						}
+					}
+				}
 				return;
 			}
 			
