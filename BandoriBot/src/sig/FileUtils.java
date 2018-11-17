@@ -11,8 +11,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,6 +156,7 @@ public class FileUtils {
 	    //System.out.println(sb.toString());
 	    return sb.toString();
 	  }
+	  
 
 	  public static JSONObject readJsonFromUrlWithFilter(String url, HashMap<Long,String> filter) throws IOException, JSONException {
 	    return readJsonFromUrlWithFilter(url,filter,null,false);
@@ -206,35 +210,78 @@ public class FileUtils {
 	      is.close();
 	    }
 	  }
+	  public static JSONObject readJsonFromFile(File file) throws IOException, JSONException {
+		    InputStream is = new FileInputStream(file);
+		    try {
+		      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+		      String jsonText = readAll(rd);
+		      JSONObject json = new JSONObject(jsonText);
+		      jsonText=null;
+		      return json;
+		    } finally {
+		      is.close();
+		    }
+		  }
 
 	  public static JSONObject readJsonFromUrl(String url, String file, boolean writeToFile) throws IOException, JSONException {
-	    InputStream is = new URL(url).openStream();
-	    try {
-	      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-	      String jsonText = readAll(rd);
-	      if (writeToFile) {
-	    	  writetoFile(new String[]{jsonText},file);
-	      }
-	      JSONObject json = new JSONObject(jsonText);
-	      return json;
-	    } finally {
-	      is.close();
-	    }
+		  //InputStream is = new URL(url).openStream();
+		    URL site = new URL(url);
+		    HttpURLConnection connection = (HttpURLConnection) site.openConnection();
+		    /*for (String s : connection.getHeaderFields().keySet()) {
+		    	System.out.println(s+": "+connection.getHeaderFields().get(s));
+		    }*/
+		    //connection.setRequestMethod("GET");
+		    connection.setRequestProperty("Content-Type", "application/json");
+		    connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		    int response = connection.getResponseCode();
+		    //System.out.println("Response: "+response);
+		      InputStreamReader stream = new InputStreamReader(connection.getInputStream());
+		      BufferedReader rd = new BufferedReader(stream);
+		      String jsonText = readAll(rd);
+		      if (writeToFile) {
+		    	  writetoFile(new String[]{jsonText},file);
+		      }
+		      JSONObject json = new JSONObject(jsonText);
+		      stream.close();
+		      return json;
+	  }
+	  
+	  public static void downloadFileFromUrl(String url, String file) throws IOException, JSONException {
+		  URL website = new URL(url);
+		    HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+		    /*for (String s : connection.getHeaderFields().keySet()) {
+		    	System.out.println(s+": "+connection.getHeaderFields().get(s));
+		    }*/
+		    //connection.setRequestMethod("GET");
+		    connection.setRequestProperty("Content-Type", "application/json");
+		    connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		  ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
+		  FileOutputStream fos = new FileOutputStream(file);
+		  fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+		  fos.close();
 	  }
 
 	  public static JSONArray readJsonArrayFromUrl(String url, String file, boolean writeToFile) throws IOException, JSONException {
-	    InputStream is = new URL(url).openStream();
-	    try {
-	      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-	      String jsonText = readAll(rd);
-	      if (writeToFile) {
-	    	  writetoFile(new String[]{jsonText},file);
-	      }
-	      JSONArray json = new JSONArray(jsonText);
-	      return json;
-	    } finally {
-	      is.close();
-	    }
+		//InputStream is = new URL(url).openStream();
+		    URL site = new URL(url);
+		    HttpURLConnection connection = (HttpURLConnection) site.openConnection();
+		    /*for (String s : connection.getHeaderFields().keySet()) {
+		    	System.out.println(s+": "+connection.getHeaderFields().get(s));
+		    }*/
+		    //connection.setRequestMethod("GET");
+		    connection.setRequestProperty("Content-Type", "application/json");
+		    connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		    int response = connection.getResponseCode();
+		    //System.out.println("Response: "+response);
+		      InputStreamReader stream = new InputStreamReader(connection.getInputStream());
+		      BufferedReader rd = new BufferedReader(stream);
+		      String jsonText = readAll(rd);
+		      if (writeToFile) {
+		    	  writetoFile(new String[]{jsonText},file);
+		      }
+		      JSONArray json = new JSONArray(jsonText);
+		      stream.close();
+		      return json;
 	  }
 	  
 	  public static void logToFile(String message, String filename) {

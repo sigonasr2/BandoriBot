@@ -34,6 +34,7 @@ public class BandoriBot extends ListenerAdapter{
 	public static JDA bot;
 	public static int messageCounter = 0;
 	Random r = new Random();
+	static GachaBot gacha;
 	
 	public static String[] eventsList = new String[]{
 			"Making Choco Cornets",
@@ -166,6 +167,7 @@ public class BandoriBot extends ListenerAdapter{
 		} catch (LoginException | InterruptedException e) {
 			e.printStackTrace();
 		}
+		gacha = new GachaBot(bot);
 		File store_file = new File(BASEDIR+"bot_status.txt");
 		if (store_file.exists()) {
 			try {
@@ -183,6 +185,7 @@ public class BandoriBot extends ListenerAdapter{
 		}
 		while (true) {
 			noMessageTimer++;
+			GachaBot.tick();
 			if (noMessageTimer>7200) {
 				if (noMessageTimer>18000) {
 					currentEvent = "Dreaming about stars";
@@ -240,7 +243,7 @@ public class BandoriBot extends ListenerAdapter{
 				}
 			}
 			try {
-				System.out.println("Current Event: "+currentEvent+"; Timer: "+currentEventTimer+"; No Message Timer: "+noMessageTimer+"; Message Counter: "+messageCounter);
+				//System.out.println("Current Event: "+currentEvent+"; Timer: "+currentEventTimer+"; No Message Timer: "+noMessageTimer+"; Message Counter: "+messageCounter);
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -396,7 +399,7 @@ public class BandoriBot extends ListenerAdapter{
 			
 			System.out.println("Channel "+channel+": "+user+" - "+message);
 			
-			if (user.getUser().getId().equalsIgnoreCase("494666451765035009")) {
+			if (user.getUser().getIdLong()==494666451765035009l) {
 				return;
 			}
 			
@@ -416,9 +419,11 @@ public class BandoriBot extends ListenerAdapter{
 				return;
 			}
 			
-			if (channel.getId().equalsIgnoreCase("485297375665979414")) {
+			if (channel.getId().equalsIgnoreCase("485297375665979414") ||
+					channel.getId().equalsIgnoreCase("509845287284768801")) {
 				System.out.println("Detected in Bandori Channel....");
 				checkForStamp(messaging_channel,user.getEffectiveName(),message);
+				gacha.checkForGacha(messaging_channel,user.getEffectiveName(),user.getUser().getIdLong(),message);
 			}
 				
 			

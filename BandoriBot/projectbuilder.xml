@@ -13,7 +13,8 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${dir.jarfile}/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="C:/Users/clgreenfield/Downloads/JDA-3.8.0_423-withDependencies.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/JDA-3.8.0_423-withDependencies.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/commons-io-2.5.jar"/>
         </jar>
     </target>
 </project>
