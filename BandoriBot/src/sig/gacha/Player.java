@@ -183,8 +183,8 @@ public class Player {
 				e.printStackTrace();
 			}
 		} else 
-		if (c.rarity==3 && card_amt>=5 &&
-		card_amt<11) {
+		if (c.rarity==3 && (card_amt==5 ||
+		card_amt==10)) {
 			//Download the image...
 			try {
 				int card_id = c.getCardID();
