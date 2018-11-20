@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -35,8 +36,10 @@ public class GachaBot {
 	static int cardcount = 0;
 	static int membercount = 0;
 	public static int databasecheck = 86400;
-	public static List<Card> cardlist = new ArrayList<Card>();
-	public static List<Member> memberlist = new ArrayList<Member>();
+	public static HashMap<Integer,Member> memberlist = new HashMap<Integer,Member>();
+	public static HashMap<Integer,Card> card_idmap = new HashMap<Integer,Card>(); 
+	public static HashMap<Integer,List<Card>> card_raritymap = new HashMap<Integer,List<Card>>();
+	public static HashMap<Integer,List<Card>> card_membermap = new HashMap<Integer,List<Card>>();
 	public static Font programFont = new Font("Century Schoolbook L",Font.PLAIN,24);
 	public GachaBot(JDA bot) {
 		this.bot=bot;
@@ -81,6 +84,11 @@ public class GachaBot {
 							.append("4* Cards: "+(p.GetPullData()[2])+"  ("+df.format((double)(p.GetPullData()[2])/(p.GetPullData()[0]+p.GetPullData()[1]+p.GetPullData()[2])*100)+"%)").append(" ["+p.GetDupeData()[2]+" dupe"+((p.GetDupeData()[2]==1)?"":"s")+"]").append('\n')
 							.append("3* Cards: "+(p.GetPullData()[1])+"  ("+df.format((double)(p.GetPullData()[1])/(p.GetPullData()[0]+p.GetPullData()[1]+p.GetPullData()[2])*100)+"%)").append(" ["+p.GetDupeData()[1]+" dupe"+((p.GetDupeData()[1]==1)?"":"s")+"]").append('\n')
 							.append("2* Cards: "+(p.GetPullData()[0])+"  ("+df.format((double)(p.GetPullData()[0])/(p.GetPullData()[0]+p.GetPullData()[1]+p.GetPullData()[2])*100)+"%)").append(" ["+p.GetDupeData()[0]+" dupe"+((p.GetDupeData()[0]==1)?"":"s")+"]").append('\n')
+							.append('\n')
+							.append("Collection: "+(p.GetCollectionData()[2]+p.GetCollectionData()[1]+p.GetCollectionData()[0])+"/"+(Card.star4total+Card.star3total+Card.star2total)).append('\n')
+							.append("4* Cards: "+(p.GetCollectionData()[2])+"/"+Card.star4total).append(" ("+df.format(((double)p.GetCollectionData()[2]/Card.star4total)*100)+"%)").append('\n')
+							.append("3* Cards: "+(p.GetCollectionData()[1])+"/"+Card.star3total).append(" ("+df.format(((double)p.GetCollectionData()[1]/Card.star3total)*100)+"%)").append('\n')
+							.append("2* Cards: "+(p.GetCollectionData()[0])+"/"+Card.star2total).append(" ("+df.format(((double)p.GetCollectionData()[0]/Card.star2total)*100)+"%)").append('\n')
 							.append("```").build()).queue();
 				}break;
 				case ".gacha":{
@@ -124,16 +132,19 @@ public class GachaBot {
 								star_rating=3;
 							}
 						}
-						Card c = Card.pickRandomCardByStarRating(cardlist, star_rating);
+						Card c = Card.pickRandomCardByStarRating(star_rating);
 						boolean trained = (star_rating>2 && p.getNumberOfCardsInCollection(c)%2==1);
 						picked_cards.add(c);
-						System.out.println("Requesting Card "+c+" from "+c.getCardURL(trained));
-						try {
-							FileUtils.downloadFileFromUrl(c.getCardURL(trained), "card_art/"+c.getCardID()+((trained)?"_trained":"")+".png");
-						} catch (JSONException | IOException e) {
-							e.printStackTrace();
-						}					
 						File card_file = new File(BandoriBot.BASEDIR+"card_art/"+c.getCardID()+((trained)?"_trained":"")+".png");
+						if (!card_file.exists()) {
+							System.out.println("Requesting Card "+c+" from "+c.getCardURL(trained));
+							try {
+								FileUtils.downloadFileFromUrl(c.getCardURL(trained), "card_art/"+c.getCardID()+((trained)?"_trained":"")+".png");
+							} catch (JSONException | IOException e) {
+								e.printStackTrace();
+							}					
+							
+						}
 						File star_file = new File(BandoriBot.BASEDIR+"newstar.png");
 						//channel.sendFile(card_file).queue();
 						BufferedImage card_img = null;
@@ -191,6 +202,7 @@ public class GachaBot {
 							if (c!=null) {
 								//Download the image...
 								try {
+									System.out.println(c.getCardArtURL(false));
 									FileUtils.downloadFileFromUrl(c.getCardArtURL(false), "art/"+card_id+".png");
 									channel.sendFile(new File(BandoriBot.BASEDIR+"art/"+card_id+".png")).queue();
 								} catch (JSONException | IOException e) {
@@ -203,11 +215,17 @@ public class GachaBot {
 						catch (NumberFormatException e) {
 							channel.sendMessage("*I am sorry, but I would like a number there instead...*").queue();
 						}*/
+						/*try {
+							FileUtils.downloadFileFromUrl("https://i.bandori.party/u/c/art/1023Lisa-Imai-Pure-%E3%82%B3%E3%83%9F%E3%83%A5%E5%8A%9BMAX-kYqpMS.png", "art/testart.png");
+							channel.sendFile(new File(BandoriBot.BASEDIR+"art/testart.png")).queue();
+						} catch (JSONException | IOException e) {
+							e.printStackTrace();
+						}*/
 						String character = wordparse[1];
 						Member m = Member.getMemberByName(memberlist, character);
 						if (m!=null) {
 							int character_id = m.getMemberID();
-							Card c = Card.pickRandomCardByMemberID(cardlist, character_id);
+							Card c = Card.pickRandomCardByMemberID(character_id);
 							if (c!=null) {
 								//Download the image...
 								try {
@@ -237,8 +255,6 @@ public class GachaBot {
 	private static void UpdateCardDatabase() {
 		int cardsLoaded = 0;
 		int membersLoaded = 0;
-		List<Card> tempcardlist = new ArrayList<Card>();
-		List<Member> tempmemberlist = new ArrayList<Member>();
 		try {
 			int pagecount = 1;
 			do {
@@ -261,8 +277,42 @@ public class GachaBot {
 				//System.out.println(cardcount+";"+nexturl+";"+prevurl+";"+carddata);
 				for (Object obj : carddata) {
 					JSONObject card = (JSONObject) obj;
-					tempcardlist.add(new Card(card));
-					cardsLoaded++;
+					Card c = new Card(card);
+					if (!card_idmap.containsKey(c.getCardID())) {
+						card_idmap.put(c.getCardID(), c);
+						if (card_raritymap.containsKey(c.getCardStarRating())) {
+							List<Card> raritylist = card_raritymap.get(c.getCardStarRating());
+							raritylist.add(c);
+							card_raritymap.put(c.getCardStarRating(), raritylist);
+						} else {
+							List<Card> raritylist = new ArrayList<Card>();
+							raritylist.add(c);
+							card_raritymap.put(c.getCardStarRating(), raritylist);
+						}
+						
+						if (card_membermap.containsKey(c.getMember())) {
+							List<Card> memberlist = card_membermap.get(c.getMember());
+							memberlist.add(c);
+							card_membermap.put(c.getMember(),memberlist);
+						} else {
+							List<Card> memberlist = new ArrayList<Card>();
+							memberlist.add(c);
+							card_membermap.put(c.getMember(), memberlist);
+						}
+						switch (c.getCardStarRating()) {
+							case 3: {
+								Card.star3total++;
+							}break;
+							case 4: {
+								Card.star4total++;
+							}break;
+							case 2: {
+								Card.star2total++;
+							}break;
+						}
+						cardcount++;
+						cardsLoaded++;
+					}
 				}
 				if (nexturl.length()==0) {
 					break;
@@ -294,7 +344,11 @@ public class GachaBot {
 				//System.out.println(cardcount+";"+nexturl+";"+prevurl+";"+carddata);
 				for (Object obj : memberdata) {
 					JSONObject member = (JSONObject) obj;
-					tempmemberlist.add(new Member(member));
+					Member m = new Member(member);
+					if (!memberlist.containsKey(m.getMemberID())) {
+						memberlist.put(m.getMemberID(),m);
+						membercount++;
+					}
 					membersLoaded++;
 				}
 				if (nexturl.length()==0) {
@@ -304,16 +358,6 @@ public class GachaBot {
 			System.out.println("Loaded "+membersLoaded+" / "+membercount+" characters.");
 		} catch (JSONException | IOException e) {
 			e.printStackTrace();
-		}
-		if (cardsLoaded == cardcount) {
-			cardlist.clear();
-			cardlist.addAll(tempcardlist);
-			System.out.println("Updated all card entries.");
-		}
-		if (membersLoaded == membercount) {
-			memberlist.clear();
-			memberlist.addAll(tempmemberlist);
-			System.out.println("Updated all member entries.");
 		}
 	}
 }

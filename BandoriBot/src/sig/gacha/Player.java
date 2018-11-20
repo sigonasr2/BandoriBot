@@ -25,6 +25,9 @@ public class Player {
 	int dupepulls4;
 	int dupepulls3;
 	int dupepulls2;
+	int collection4;
+	int collection3;
+	int collection2;
 	HashMap<Integer,Integer> card_collection = new HashMap<Integer,Integer>();
 	
 	public Player(long discordID, String discordName) {
@@ -36,6 +39,9 @@ public class Player {
 		dupepulls4=0;
 		dupepulls3=0;
 		dupepulls2=0;
+		collection4=0;
+		collection3=0;
+		collection2=0;
 		//SavePlayerProfile();
 	}
 	
@@ -50,6 +56,10 @@ public class Player {
 	
 	public int[] GetDupeData() {
 		return new int[]{dupepulls2,dupepulls3,dupepulls4};
+	}
+	
+	public int[] GetCollectionData() {
+		return new int[]{collection2,collection3,collection4};
 	}
 
 	private String[] GetFileData() {
@@ -86,9 +96,9 @@ public class Player {
 			case 4:{
 				pulls4++;
 			}break;
-			default:{
+			case 2:{
 				pulls2++;
-			}
+			}break;
 		}
 		if (card_collection.containsKey(c.id)) {
 			card_collection.put(c.id,card_collection.get(c.id)+1);
@@ -99,11 +109,22 @@ public class Player {
 			case 4:{
 				dupepulls4++;
 			}break;
-			default:{
+			case 2:{
 				dupepulls2++;
-			}
+			}break;
 		}
 		} else {
+			switch (c.rarity) {
+				case 3:{
+					collection3++;
+				}break;
+				case 4:{
+					collection4++;
+				}break;
+				case 2:{
+					collection2++;
+				}break;
+			}
 			card_collection.put(c.id, 1);
 		}
 	}
@@ -129,10 +150,21 @@ public class Player {
 		while (i<filedata.length) {
 			String s = filedata[i++];
 			String[] parse = s.split(";");
-			Card c = Card.findCardByID(GachaBot.cardlist, Integer.parseInt(parse[0]));
+			Card c = Card.findCardByID(Integer.parseInt(parse[0]));
 			//p.addCardToCollection(c);
 			int cardcount = Integer.parseInt(parse[1]);
 			p.card_collection.put(c.id, cardcount);
+			switch (c.rarity) {
+				case 3:{
+					p.collection3++;
+				}break;
+				case 4:{
+					p.collection4++;
+				}break;
+				case 2:{
+					p.collection2++;
+				}break;
+			}
 			if (cardcount>1) {
 				switch (c.rarity) {
 					case 3:{
@@ -141,9 +173,9 @@ public class Player {
 					case 4:{
 						p.dupepulls4+=cardcount-1;
 					}break;
-					default:{
+					case 2:{
 						p.dupepulls2+=cardcount-1;
-					}
+					}break;
 				}
 			}
 			System.out.println("Loaded card "+c.id+" to profile "+p.discordName);
@@ -169,16 +201,19 @@ public class Player {
 			try {
 				int card_id = c.getCardID();
 				boolean trained = (card_amt==2)?true:false;
-				System.out.println("Requesting Card "+c+" from "+c.getCardArtURL(trained));
-				FileUtils.downloadFileFromUrl(c.getCardArtURL(trained), "art/"+card_id+((trained)?"_trained":"")+".png");
-				Message msg;
+				File cardfile = new File(BandoriBot.BASEDIR+"art/"+card_id+((trained)?"_trained":"")+".png");
+				Message msg = null;
+				if (!cardfile.exists()) {
+					System.out.println("Requesting Card "+c+" from "+c.getCardArtURL(trained));
+					FileUtils.downloadFileFromUrl(c.getCardArtURL(trained), "art/"+card_id+((trained)?"_trained":"")+".png");
+				}
 				if (card_amt==1) {
 					msg = new MessageBuilder().append("*Congratulations for unlocking a new* 4\\* **"+p.discordName+"**!").append('\n').
 							append("**"+Member.getMemberByID(GachaBot.memberlist, c.member).name+"** ["+c.name+"]").build();
 				} else {
 					msg = new MessageBuilder().append("**"+p.discordName+"** unlocked the trained version of **"+Member.getMemberByID(GachaBot.memberlist, c.member).name+"** ["+c.name+"]! **Congratulations!**").build();
 				}
-				channel.sendFile(new File(BandoriBot.BASEDIR+"art/"+card_id+((trained)?"_trained":"")+".png"),msg).queue();
+				channel.sendFile(cardfile,msg).queue();
 			} catch (JSONException | IOException e) {
 				e.printStackTrace();
 			}
@@ -189,15 +224,18 @@ public class Player {
 			try {
 				int card_id = c.getCardID();
 				boolean trained = (card_amt==10)?true:false;
-				System.out.println("Requesting Card "+c+" from "+c.getCardArtURL(trained));
-				FileUtils.downloadFileFromUrl(c.getCardArtURL(trained), "art/"+card_id+((trained)?"_trained":"")+".png");
-				Message msg;
+				File cardfile = new File(BandoriBot.BASEDIR+"art/"+card_id+((trained)?"_trained":"")+".png");
+				Message msg = null;
+				if (!cardfile.exists()) {
+					System.out.println("Requesting Card "+c+" from "+c.getCardArtURL(trained));
+					FileUtils.downloadFileFromUrl(c.getCardArtURL(trained), "art/"+card_id+((trained)?"_trained":"")+".png");
+				}
 				if (card_amt==5) {
 					msg = new MessageBuilder().append("**Congratulations for collecting 5 **"+Member.getMemberByID(GachaBot.memberlist, c.member).name+"** ["+c.name+"] **"+p.discordName+"**!").build();
 				} else {
 					msg = new MessageBuilder().append("**Congratulations for collecting 10 **"+Member.getMemberByID(GachaBot.memberlist, c.member).name+"** ["+c.name+"] **"+p.discordName+"**!").build();
 				}
-				channel.sendFile(new File(BandoriBot.BASEDIR+"art/"+card_id+((trained)?"_trained":"")+".png"),msg).queue();
+				channel.sendFile(cardfile,msg).queue();
 			} catch (JSONException | IOException e) {
 				e.printStackTrace();
 			}
@@ -208,10 +246,13 @@ public class Player {
 				int card_id = c.getCardID();
 				boolean trained = false;
 				System.out.println("Requesting Card "+c+" from "+c.getCardArtURL(trained));
-				FileUtils.downloadFileFromUrl(c.getCardArtURL(trained), "art/"+card_id+((trained)?"_trained":"")+".png");
-				Message msg;
+				File cardfile = new File(BandoriBot.BASEDIR+"art/"+card_id+((trained)?"_trained":"")+".png");
+				Message msg = null;
+				if (!cardfile.exists()) {
+					FileUtils.downloadFileFromUrl(c.getCardArtURL(trained), "art/"+card_id+((trained)?"_trained":"")+".png");
+				}
 				msg = new MessageBuilder().append("**Congratulations for collecting 100 **"+Member.getMemberByID(GachaBot.memberlist, c.member).name+"** ["+c.name+"] **"+p.discordName+"**!").build();
-				channel.sendFile(new File(BandoriBot.BASEDIR+"art/"+card_id+((trained)?"_trained":"")+".png"),msg).queue();
+				channel.sendFile(cardfile,msg).queue();
 			} catch (JSONException | IOException e) {
 				e.printStackTrace();
 			}

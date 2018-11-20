@@ -2,12 +2,18 @@ package sig.gacha;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import sig.GachaBot;
+
 public class Card {
+	public static int star4total = 0;
+	public static int star3total = 0;
+	public static int star2total = 0;
 	int id;
 	int member;
 	int rarity;
@@ -65,32 +71,17 @@ public class Card {
 		System.out.println("Card Data: "+this);
 	}
 	
-	public static Card findCardByID(List<Card> database,int cardID) {
-		for (Card c : database) {
-			if (c.id == cardID) {
-				return c;
-			}
-		}
-		return null;
+	public static Card findCardByID(int cardID) {
+		return GachaBot.card_idmap.get(cardID);
 	}
 	
-	public static Card pickRandomCardByStarRating(List<Card> database,int stars) {
-		List<Card> cardList = new ArrayList<Card>();
-		for (Card c : database) {
-			if (c.rarity==stars) {
-				cardList.add(c);
-			}
-		}
+	public static Card pickRandomCardByStarRating(int stars) {
+		List<Card> cardList = GachaBot.card_raritymap.get(stars);
 		return cardList.get((int)(Math.random()*cardList.size()));
 	}
 	
-	public static Card pickRandomCardByMemberID(List<Card> database,int memberID) {
-		List<Card> cardList = new ArrayList<Card>();
-		for (Card c : database) {
-			if (c.member == memberID) {
-				cardList.add(c);
-			}
-		}
+	public static Card pickRandomCardByMemberID(int memberID) {
+		List<Card> cardList = GachaBot.card_membermap.get(memberID);
 		return cardList.get((int)(Math.random()*cardList.size()));
 	}
 	
@@ -116,6 +107,10 @@ public class Card {
 	
 	public int getCardStarRating() {
 		return rarity;
+	}
+	
+	public int getMember() {
+		return member;
 	}
 	
 	int getIntFromJson(JSONObject data, String key) {

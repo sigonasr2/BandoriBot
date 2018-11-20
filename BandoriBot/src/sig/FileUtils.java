@@ -11,8 +11,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
@@ -24,10 +29,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import sig.sigIRC;
-import sig.modules.ChatLog.ChatLogMessage;
-
 public class FileUtils {
 	public static String[] readFromFile(String filename) {
 		File file = new File(filename);
@@ -246,9 +247,22 @@ public class FileUtils {
 		      return json;
 	  }
 	  
+	  static int LastSlash(String s) {
+		  int lastSlashpos = 0;
+		  for (int i=0;i<s.length();i++) {
+			  if (s.charAt(i)=='/') {
+				  lastSlashpos=i;
+			  }
+		  }
+		  return lastSlashpos;
+	  }
+	  
 	  public static void downloadFileFromUrl(String url, String file) throws IOException, JSONException {
-		  URL website = new URL(url);
-		    HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+		  String temp = url.substring(0,LastSlash(url));
+		  String temp2 = url.substring(LastSlash(url));
+		  
+		  URL website = new URL(temp+URLEncoder.encode(temp2, "UTF-8"));
+		  HttpURLConnection connection = (HttpURLConnection) website.openConnection();
 		    /*for (String s : connection.getHeaderFields().keySet()) {
 		    	System.out.println(s+": "+connection.getHeaderFields().get(s));
 		    }*/

@@ -1,5 +1,6 @@
 package sig.gacha;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -41,8 +42,9 @@ public class Member {
 		desc = getStringFromJson(data,"description");
 	}
 	
-	public static Member getMemberByName(List<Member> database, String name) {
-		for (Member m : database) {
+	public static Member getMemberByName(HashMap<Integer,Member> database, String name) {
+		for (Integer i : database.keySet()) {
+			Member m = database.get(i);
 			if (m.name.split(" ")[0].equalsIgnoreCase(name)) {
 				return m;
 			}
@@ -50,13 +52,8 @@ public class Member {
 		return null;
 	}
 	
-	public static Member getMemberByID(List<Member> database, int id) {
-		for (Member m : database) {
-			if (m.id==id) {
-				return m;
-			}
-		}
-		return null;
+	public static Member getMemberByID(HashMap<Integer,Member> database, int id) {
+		return database.get(id);
 	}
 	
 	public int getMemberID() {
