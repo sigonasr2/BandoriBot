@@ -27,6 +27,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.requests.restaction.MessageAction;
 import sig.gacha.Card;
 import sig.gacha.Member;
 import sig.gacha.Player;
@@ -35,7 +36,8 @@ public class GachaBot {
 	JDA bot;
 	static int cardcount = 0;
 	static int membercount = 0;
-	public static int databasecheck = 86400;
+	public static int databasecheck = 21400;
+	static boolean initialcheck=false;
 	public static HashMap<Integer,Member> memberlist = new HashMap<Integer,Member>();
 	public static HashMap<Integer,Card> card_idmap = new HashMap<Integer,Card>(); 
 	public static HashMap<Integer,List<Card>> card_raritymap = new HashMap<Integer,List<Card>>();
@@ -348,8 +350,8 @@ public class GachaBot {
 					if (!memberlist.containsKey(m.getMemberID())) {
 						memberlist.put(m.getMemberID(),m);
 						membercount++;
+						membersLoaded++;
 					}
-					membersLoaded++;
 				}
 				if (nexturl.length()==0) {
 					break;
@@ -358,6 +360,13 @@ public class GachaBot {
 			System.out.println("Loaded "+membersLoaded+" / "+membercount+" characters.");
 		} catch (JSONException | IOException e) {
 			e.printStackTrace();
+		}
+		if (!initialcheck) {
+			initialcheck=true;
+		} else {
+			if (cardsLoaded>0) {
+				BandoriBot.bot.getTextChannelById(509845287284768801l).sendMessage("**"+cardsLoaded+" new cards are now available! Good Luck!** ("+(Card.star2total+Card.star3total+Card.star4total)+" total)").queue();
+			}
 		}
 	}
 }

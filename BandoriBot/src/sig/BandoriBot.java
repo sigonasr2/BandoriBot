@@ -401,6 +401,11 @@ public class BandoriBot extends ListenerAdapter{
 			System.out.println("Channel "+channel+": "+user+" - "+message);
 			
 			if (user.getUser().getIdLong()==494666451765035009l) {
+				if (channel.getId().equalsIgnoreCase("509845287284768801")) {
+					if (message.contains("new cards are now available! Good Luck!")) {
+						messaging_channel.pinMessageById(ev.getMessageId()).queue();
+					}
+				}
 				return;
 			}
 			
