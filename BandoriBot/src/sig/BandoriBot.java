@@ -322,7 +322,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("kanon_keepgoing",Arrays.asList("keepgoing","dontstop","youcandoit","makeit","gaja","petan","pettan","pengu"));
 		stamp_map.put("tsugumi_amazing",Arrays.asList("amazing","wow","sugoi","wooo","cool!","tsugurific"));
 		stamp_map.put("eve_thefruits",Arrays.asList("fruits","labor","hardwork","effort"));
-		
+		stamp_map.put("lisa_imnotready",Arrays.asList("notready","notprep","stopit","holdon","onemin","onemom","noread","wontberead","notrdy","nottime","notime","waitam","waitforme"));
 		
 		/// BOT ONLY!!! DO NOT ADD THE BELOW LINES TO BANDORI MODULE IN SIGIRC!!!
 		stamp_map.put("aya_pressure",Arrays.asList("feelingheavy","thisfeeling","pressure","toomuch","waa","ahhhhh","ayya"));
