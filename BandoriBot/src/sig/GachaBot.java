@@ -42,7 +42,9 @@ public class GachaBot {
 	public static HashMap<Integer,Card> card_idmap = new HashMap<Integer,Card>(); 
 	public static HashMap<Integer,List<Card>> card_raritymap = new HashMap<Integer,List<Card>>();
 	public static HashMap<Integer,List<Card>> card_membermap = new HashMap<Integer,List<Card>>();
+	public static HashMap<Long,Long> gacha_reroll_timer = new HashMap<Long,Long>();
 	public static Font programFont = new Font("Century Schoolbook L",Font.PLAIN,24);
+	final public static int GACHADELAY = 2000; 
 	public GachaBot(JDA bot) {
 		this.bot=bot;
 		UpdateCardDatabase();
@@ -94,6 +96,13 @@ public class GachaBot {
 							.append("```").build()).queue();
 				}break;
 				case ".gacha":{
+					if (gacha_reroll_timer.containsKey(discordID)) {
+						if (gacha_reroll_timer.get(discordID)>System.currentTimeMillis()) {
+							gacha_reroll_timer.put(discordID,Math.min(gacha_reroll_timer.get(discordID)+500,System.currentTimeMillis()+GACHADELAY));
+							return;
+						}
+					}
+					gacha_reroll_timer.put(discordID, System.currentTimeMillis()+GACHADELAY);
 					//System.out.print("This is a gacha attempt~!");
 					int amt = 1;
 					if (wordparse.length>1) {
