@@ -84,7 +84,7 @@ public class GachaBot {
 				case ".stats":{
 					Player p = Player.GetPlayerProfile(discordID, name);
 					DecimalFormat df = new DecimalFormat("0.0");
-					channel.sendMessage(new MessageBuilder("*Stats for* "+name+":").append('\n')
+					channel.sendMessage(new MessageBuilder("*Stats for* "+name+":").append('\n').append('\n')
 							.append("```ff").append('\n')
 							.append("Total Rolls: "+(p.GetPullData()[0]+p.GetPullData()[1]+p.GetPullData()[2])).append('\n')
 							.append("4* Cards: "+(p.GetPullData()[2])+"  ("+df.format((double)(p.GetPullData()[2])/(p.GetPullData()[0]+p.GetPullData()[1]+p.GetPullData()[2])*100)+"%)").append(" ["+p.GetDupeData()[2]+" dupe"+((p.GetDupeData()[2]==1)?"":"s")+"]").append('\n')
