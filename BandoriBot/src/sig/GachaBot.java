@@ -36,7 +36,8 @@ public class GachaBot {
 	JDA bot;
 	static int cardcount = 0;
 	static int membercount = 0;
-	public static int databasecheck = 21400;
+	final public static int DATABASE_RECHECK_TIMER = 10700;
+	public static int databasecheck = DATABASE_RECHECK_TIMER;
 	static boolean initialcheck=false;
 	public static HashMap<Integer,Member> memberlist = new HashMap<Integer,Member>();
 	public static HashMap<Integer,Card> card_idmap = new HashMap<Integer,Card>(); 
@@ -370,11 +371,35 @@ public class GachaBot {
 		} catch (JSONException | IOException e) {
 			e.printStackTrace();
 		}
+		File f = new File(BandoriBot.BASEDIR+"oldcardcount");
+		int oldcardcount = 0;
+		if (f.exists()) {
+			oldcardcount = Integer.parseInt(FileUtils.readFromFile(BandoriBot.BASEDIR+"oldcardcount")[0]);	
+		} else {
+			oldcardcount = cardcount;
+		}
 		if (!initialcheck) {
 			initialcheck=true;
 		} else {
 			if (cardsLoaded>0) {
-				BandoriBot.bot.getTextChannelById(509845287284768801l).sendMessage("**"+cardsLoaded+" new cards are now available! Good Luck!** ("+(Card.star2total+Card.star3total+Card.star4total)+" total)").queue();
+				int newCards = (cardsLoaded>0)?cardsLoaded:(cardcount-oldcardcount);
+				BandoriBot.bot.getTextChannelById(509845287284768801l).sendMessage("**"+newCards+" new cards are now available! Good Luck!** ("+(Card.star2total+Card.star3total+Card.star4total)+" total)").queue();
+				String[] newdata = new String[]{Integer.toString(cardcount)};
+				FileUtils.writetoFile(newdata, BandoriBot.BASEDIR+"oldcardcount");
+				oldcardcount = cardcount;
+			}
+		}
+		if (cardcount != oldcardcount) {
+			int newCards = (cardcount-oldcardcount);
+			BandoriBot.bot.getTextChannelById(509845287284768801l).sendMessage("**"+newCards+" new cards are now available! Good Luck!** ("+(Card.star2total+Card.star3total+Card.star4total)+" total)").queue();
+			String[] newdata = new String[]{Integer.toString(cardcount)};
+			FileUtils.writetoFile(newdata, BandoriBot.BASEDIR+"oldcardcount");
+		}
+		//Cleanup old gacha results:
+		File dir = new File(BandoriBot.BASEDIR+"gacha_results");
+		for (File filer : dir.listFiles()) {
+			if (filer.isFile()) {
+				filer.delete();
 			}
 		}
 	}
