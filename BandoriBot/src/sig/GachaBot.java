@@ -389,7 +389,7 @@ public class GachaBot {
 				oldcardcount = cardcount;
 			}
 		}
-		if (cardcount != oldcardcount) {
+		if (cardcount != oldcardcount && cardcount>oldcardcount) {
 			int newCards = (cardcount-oldcardcount);
 			BandoriBot.bot.getTextChannelById(509845287284768801l).sendMessage("**"+newCards+" new cards are now available! Good Luck!** ("+(Card.star2total+Card.star3total+Card.star4total)+" total)").queue();
 			String[] newdata = new String[]{Integer.toString(cardcount)};
