@@ -293,7 +293,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("yukina_notbad",Arrays.asList("notbad","veryclose"));
 		stamp_map.put("sayo_goodwork",Arrays.asList("goodwork","goodjob","nicejob","welldone","greatwork","greatjob"));
 		stamp_map.put("lisa_nextonelastone",Arrays.asList("lastone","mylast"));
-		stamp_map.put("ako_onemoretime",Arrays.asList("onemore","goagain","keepgoing","dontstop","runit"));
+		stamp_map.put("ako_onemoretime",Arrays.asList("onemore","goagain","keepplaying","dontstop","runit"));
 		stamp_map.put("rinko_jam",Arrays.asList("lovethissong","jam"/*,"happybirthday"*/));
 		stamp_map.put("marina_yeahyeah",Arrays.asList("yeahyeah","letsgo"));
 		stamp_map.put("kokoro_moremore",Arrays.asList("moremore","iwantmore"));
@@ -324,6 +324,7 @@ public class BandoriBot extends ListenerAdapter{
 		stamp_map.put("lisa_imnotready",Arrays.asList("notready","notprep","stopit","holdon","onemin","onemom","noread","wontberead","notrdy","nottime","notime","waitam","waitforme"));
 		stamp_map.put("arisa_okayhereigo",Arrays.asList("hereigo","okayilltry","alrightilltry","domybest","trymybest","alrighty","itashot","myturn","domybest"));
 		stamp_map.put("tomoe_giveityourall",Arrays.asList("giveiteverything","allyougot","everythingyougot","tryyourbest","giveityourall","youreverything","yourall"));
+		stamp_map.put("kanon_keepgoing",Arrays.asList("keepgoing","dontstop","youcandoit","makeit","gaja","petan","pettan","pengu"));
 		
 		/// BOT ONLY!!! DO NOT ADD THE BELOW LINES TO BANDORI MODULE IN SIGIRC!!!
 		stamp_map.put("aya_pressure",Arrays.asList("feelingheavy","thisfeeling","pressure","toomuch","waa","ahhhhh","ayya"));
